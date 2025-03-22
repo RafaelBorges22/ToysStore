@@ -38,7 +38,6 @@ public class TestConfig implements CommandLineRunner {
         UserModel user3 = new UserModel("Carlos Souza", "carlos.souza@example.com", "senha789");
         UserModel user4 = new UserModel("Ana Costa", "ana.costa@example.com", "senha101");
         UserModel user5 = new UserModel("Pedro Rocha", "pedro.rocha@example.com", "senha202");
-
         this.userRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
     }
 }
