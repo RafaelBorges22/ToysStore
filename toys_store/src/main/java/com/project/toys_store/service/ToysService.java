@@ -19,6 +19,10 @@ public class ToysService {
         return this.toysRepository.findAll();
     }
 
+    public List<ToysModel> findByCategoriaId(Long categoriaId) {
+        return toysRepository.findByCategoriaId(categoriaId);
+    }
+
     public ToysModel create(ToysModel createToy) {
         return this.toysRepository.save(createToy);
     }

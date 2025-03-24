@@ -28,6 +28,12 @@ public class ToysController {
         return ResponseEntity.ok().body(toysModelList);
     }
 
+    //Get por categoria
+    @GetMapping("/categoria/{categoriaId}")
+    public List<ToysModel> getBrinquedosByCategoria(@PathVariable Long categoriaId) {
+        return toysService.findByCategoriaId(categoriaId);
+    }
+
     @PostMapping // -> retirei o ("/"), talve esse era o problema que você estav aefrentando...
     public ResponseEntity<ToysModel> create(@RequestBody ToysModel createToy) {
         createToy = this.toysService.create(createToy);

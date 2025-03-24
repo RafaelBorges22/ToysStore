@@ -12,6 +12,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_toys")
 public class ToysModel implements Serializable {
     @jakarta.persistence.Id
@@ -21,14 +22,19 @@ public class ToysModel implements Serializable {
 
     private String name;
     private String description;
-    // -> valores double são valores que tem apenas dois valores após o ponto, acredito ser mais pertinente colocar esses valores
     private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryModel categoryModel;
+
 
     public ToysModel(Long id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+
     }
 
     @Override
