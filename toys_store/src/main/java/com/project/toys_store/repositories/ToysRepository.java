@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ToysRepository extends JpaRepository<ToysModel, Long> {
-    List<ToysModel> findByCategoriaId(Long categoriaId);
+    List<ToysModel> findByCategoryId(Long id);
 }

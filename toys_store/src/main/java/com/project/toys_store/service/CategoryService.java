@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Service
 public class CategoryService {
-
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -25,7 +24,7 @@ public class CategoryService {
 
     public CategoryModel findOne(Long id) {
         Optional<CategoryModel> categoryModel = this.categoryRepository.findById(id);
-        return categoryModel.orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        return categoryModel.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
     }
 
     public CategoryModel updateCategory(Long id, CategoryModel categoryModel) {
@@ -34,7 +33,7 @@ public class CategoryService {
             this.updateData(categoryEntity, categoryModel);
             return this.categoryRepository.save(categoryEntity);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Category not found");
+            throw new EntityNotFoundException("not found");
         }
     }
 
@@ -42,7 +41,7 @@ public class CategoryService {
         try {
             this.categoryRepository.deleteById(id);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Category not found");
+            throw new EntityNotFoundException("not found");
         }
     }
 
@@ -50,12 +49,11 @@ public class CategoryService {
         try {
             this.categoryRepository.deleteAllById(ids);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Categories not found");
+            throw new EntityNotFoundException("not found");
         }
     }
 
     private void updateData(CategoryModel categoryEntity, CategoryModel categoryModel) {
         categoryEntity.setName(categoryModel.getName());
-        categoryEntity.setDescription(categoryModel.getDescription());
     }
 }

@@ -29,9 +29,9 @@ public class ToysController {
     }
 
     //Get por categoria
-    @GetMapping("/categoria/{categoriaId}")
+    @GetMapping("/categories/{categoryId}")
     public List<ToysModel> getBrinquedosByCategoria(@PathVariable Long categoriaId) {
-        return toysService.findByCategoriaId(categoriaId);
+        return toysService.findByCategoryId(categoriaId);
     }
 
     @PostMapping // -> retirei o ("/"), talve esse era o problema que você estav aefrentando...

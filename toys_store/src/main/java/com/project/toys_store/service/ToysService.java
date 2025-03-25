@@ -19,8 +19,8 @@ public class ToysService {
         return this.toysRepository.findAll();
     }
 
-    public List<ToysModel> findByCategoriaId(Long categoriaId) {
-        return toysRepository.findByCategoriaId(categoriaId);
+    public List<ToysModel> findByCategoryId(Long categoryId) {
+        return toysRepository.findByCategoryId(categoryId);
     }
 
     public ToysModel create(ToysModel createToy) {

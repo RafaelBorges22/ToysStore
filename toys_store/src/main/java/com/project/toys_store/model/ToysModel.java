@@ -1,21 +1,17 @@
 package com.project.toys_store.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.*;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "tb_toys")
 public class ToysModel implements Serializable {
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,18 +20,18 @@ public class ToysModel implements Serializable {
     private String description;
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private CategoryModel categoryModel;
+    public ToysModel() {
+    }
 
-
-    public ToysModel(Long id, String name, String description, Double price) {
-        this.id = id;
+    public ToysModel(String name, String description, Double price) {
         this.name = name;
         this.description = description;
         this.price = price;
-
     }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryModel category;
 
     @Override
     public boolean equals(Object o) {

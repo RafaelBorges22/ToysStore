@@ -5,11 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
-@Setter
 @Getter
+@Setter
 @Entity
 @Table(name = "tb_categories")
 public class CategoryModel implements Serializable {
@@ -18,29 +17,24 @@ public class CategoryModel implements Serializable {
     private Long id;
 
     private String name;
-    private String description;
 
     public CategoryModel() {
     }
 
-    public CategoryModel(Long id, String name) {
-        this.id = id;
+    public CategoryModel(String name) {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ToysModel> toysModelList;
-
-
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryModel category = (CategoryModel) o;
-        return Objects.equals(id, category.id);
+        CategoryModel that = (CategoryModel) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 }
