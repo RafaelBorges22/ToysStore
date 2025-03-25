@@ -6,17 +6,22 @@ import com.project.toys_store.repositories.ToysRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 import java.util.Optional;
-
+import java.util.HashSet;
 
 @Service
 public class ToysService {
     @Autowired
     private ToysRepository toysRepository;
 
-    public List<ToysModel> findAll() {
-        return this.toysRepository.findAll();
+    public HashSet findAll() {
+        return new HashSet<>((Collection) this.toysRepository.findAll());
+    }
+
+    public Set<ToysModel> findByCategoryId(Long categoryId) {
+        return new HashSet<>(toysRepository.findByCategoryId(categoryId));
     }
 
     public ToysModel create(ToysModel createToy) {
@@ -47,7 +52,7 @@ public class ToysService {
         }
     }
 
-    public void deleteMany(List<Long> ids) {
+    public void deleteMany(Set<Long> ids) {
         try {
             this.toysRepository.deleteAllById(ids);
         } catch (EntityNotFoundException e) {

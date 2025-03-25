@@ -1,35 +1,39 @@
 package com.project.toys_store.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.*;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@NoArgsConstructor
 @Table(name = "tb_toys")
 public class ToysModel implements Serializable {
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String description;
-    // -> valores double são valores que tem apenas dois valores após o ponto, acredito ser mais pertinente colocar esses valores
     private Double price;
 
-    public ToysModel(Long id, String name, String description, Double price) {
-        this.id = id;
+    public ToysModel() {
+    }
+
+    public ToysModel(String name, String description, Double price) {
         this.name = name;
         this.description = description;
         this.price = price;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonBackReference
+    private CategoryModel category;
 
     @Override
     public boolean equals(Object o) {
@@ -37,6 +41,7 @@ public class ToysModel implements Serializable {
         ToysModel toysModel = (ToysModel) o;
         return Objects.equals(id, toysModel.id);
     }
+
 
     @Override
     public int hashCode() {

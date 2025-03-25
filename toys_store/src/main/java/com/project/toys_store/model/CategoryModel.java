@@ -1,18 +1,46 @@
 package com.project.toys_store.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.*;
 
-// termine de implementar essa classe rafael ou vitor, talvez ambos, implementem ela juntos
-// criem todo o fluxo desde essa classe o repository até o controller
-// o serializable transforma a classe em uma sequência de bits, facilitando o seu tráfego na rede, deixando a classe mais leve
-// deve ter um conjunto de produtos -> pois não podemos ter produtos repetidos dentro dessa tabela
+@Getter
+@Setter
 @Entity
-@Table(name = "tb_category")
+@Table(name = "tb_categories")
 public class CategoryModel implements Serializable {
-    // -> precisei colocar esse atributo para rodar o jpa e subir o banco de dados, caso contrário a aplicação quebraria todas as vezes que eu fosse testar
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
+
+
+    public CategoryModel() {
+    }
+
+    public CategoryModel(String name) {
+        this.name = name;
+    }
+
+    @OneToMany(mappedBy = "category")
+    @JsonManagedReference
+    private Set<ToysModel> toys = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategoryModel that = (CategoryModel) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
