@@ -6,19 +6,24 @@ import com.project.toys_store.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<CategoryModel> findAll() {
-        return this.categoryRepository.findAll();
+    public Set<CategoryModel> findAll() {
+        return new HashSet<>(this.categoryRepository.findAll());
     }
 
     public CategoryModel create(CategoryModel createCategory) {
+        // Verifica se já existe uma categoria com o mesmo nome
+        if (categoryRepository.existsByName(createCategory.getName())) {
+            throw new IllegalArgumentException("Já existe uma categoria com este nome");
+        }
         return this.categoryRepository.save(createCategory);
     }
 
@@ -30,6 +35,13 @@ public class CategoryService {
     public CategoryModel updateCategory(Long id, CategoryModel categoryModel) {
         try {
             CategoryModel categoryEntity = this.categoryRepository.getReferenceById(id);
+
+            // Verifica se o novo nome já existe (e não é o mesmo da entidade atual)
+            if (!categoryEntity.getName().equals(categoryModel.getName()) &&
+                    categoryRepository.existsByName(categoryModel.getName())) {
+                throw new IllegalArgumentException("Já existe uma categoria com este nome");
+            }
+
             this.updateData(categoryEntity, categoryModel);
             return this.categoryRepository.save(categoryEntity);
         } catch (EntityNotFoundException e) {
@@ -45,7 +57,7 @@ public class CategoryService {
         }
     }
 
-    public void deleteMany(List<Long> ids) {
+    public void deleteMany(Set<Long> ids) {
         try {
             this.categoryRepository.deleteAllById(ids);
         } catch (EntityNotFoundException e) {

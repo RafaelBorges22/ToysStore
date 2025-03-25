@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/categories")
@@ -18,8 +18,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryModel>> findAll() {
-        List<CategoryModel> categories = categoryService.findAll();
+    public ResponseEntity<Set<CategoryModel>> findAll() {
+        Set<CategoryModel> categories = categoryService.findAll();
         return ResponseEntity.ok().body(categories);
     }
 
@@ -52,7 +52,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/deletemany")
-    public ResponseEntity<Void> deleteMany(@RequestBody List<Long> ids) {
+    public ResponseEntity<Void> deleteMany(@RequestBody Set<Long> ids) {
         categoryService.deleteMany(ids);
         return ResponseEntity.noContent().build();
     }

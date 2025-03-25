@@ -1,6 +1,5 @@
 package com.project.toys_store.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.toys_store.model.ToysModel;
 import com.project.toys_store.service.ToysService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Set;
 
 // observação -> sempre utiliza esses vocabulários
 // findAll, findOne, create, deleteOne, deleteMany
@@ -17,31 +16,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/toys")
-
 public class ToysController {
     @Autowired
     private ToysService toysService;
 
     @GetMapping
-    public ResponseEntity<List<ToysModel>> findAll() {
-        List<ToysModel> toysModelList = this.toysService.findAll();
+    public ResponseEntity<Set<ToysModel>> findAll() {
+        Set<ToysModel> toysModelList = this.toysService.findAll();
         return ResponseEntity.ok().body(toysModelList);
     }
 
     //Get por categoria
     @GetMapping("/categories/{categoryId}")
-    public List<ToysModel> getBrinquedosByCategoria(@PathVariable Long categoriaId) {
-        return toysService.findByCategoryId(categoriaId);
+    public Set<ToysModel> getBrinquedosByCategoria(@PathVariable Long categoryId) {
+        return toysService.findByCategoryId(categoryId);
     }
 
-    @PostMapping // -> retirei o ("/"), talve esse era o problema que você estav aefrentando...
+    @PostMapping
     public ResponseEntity<ToysModel> create(@RequestBody ToysModel createToy) {
         createToy = this.toysService.create(createToy);
         URI uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createToy.getId()).toUri();
         return ResponseEntity.created(uriBuilder).body(createToy);
     }
 
-    @PutMapping(value = "/{id}") // -> aqui você esqueceu de colocar o "value", talvez este era o erro
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ToysModel> update(@PathVariable Long id, @RequestBody ToysModel updatedToy) {
         updatedToy = this.toysService.updateToy(id, updatedToy);
         return ResponseEntity.ok().body(updatedToy);
@@ -54,7 +52,7 @@ public class ToysController {
     }
 
     @DeleteMapping("/deletemany")
-    public ResponseEntity<Void> deleteMany(@RequestBody List<Long> ids) {
+    public ResponseEntity<Void> deleteMany(@RequestBody Set<Long> ids) {
         this.toysService.deleteMany(ids);
         return ResponseEntity.noContent().build();
     }

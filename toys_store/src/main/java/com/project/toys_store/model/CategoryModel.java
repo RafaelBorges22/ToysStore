@@ -1,11 +1,12 @@
 package com.project.toys_store.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -18,12 +19,17 @@ public class CategoryModel implements Serializable {
 
     private String name;
 
+
     public CategoryModel() {
     }
 
     public CategoryModel(String name) {
         this.name = name;
     }
+
+    @OneToMany(mappedBy = "category")
+    @JsonManagedReference
+    private Set<ToysModel> toys = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -35,6 +41,6 @@ public class CategoryModel implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 }

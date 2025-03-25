@@ -1,5 +1,6 @@
 package com.project.toys_store.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class ToysModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private CategoryModel category;
 
     @Override
@@ -39,6 +41,7 @@ public class ToysModel implements Serializable {
         ToysModel toysModel = (ToysModel) o;
         return Objects.equals(id, toysModel.id);
     }
+
 
     @Override
     public int hashCode() {
