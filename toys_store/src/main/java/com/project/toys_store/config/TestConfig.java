@@ -26,7 +26,7 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CategoryRepository  categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -35,20 +35,21 @@ public class TestConfig implements CommandLineRunner {
 
         Set<ToysModel> toysSet = new HashSet<>();
 
-        CategoryModel category1 = new CategoryModel("Educativos");
-        CategoryModel category2 = new CategoryModel("Bonecas e Acessórios");
-        CategoryModel category3 = new CategoryModel("Carrinhos e Veículos");
-        CategoryModel category4 = new CategoryModel("Jogos e Quebra-Cabeças");
-        CategoryModel category5 = new CategoryModel("Bichos de Pelúcia");
+        CategoryModel category1 = new CategoryModel(null, "Educativos");
+        CategoryModel category2 = new CategoryModel(null, "Bonecas e Acessórios");
+        CategoryModel category3 = new CategoryModel(null, "Carrinhos e Veículos");
+        CategoryModel category4 = new CategoryModel(null, "Jogos e Quebra-Cabeças");
+        CategoryModel category5 = new CategoryModel(null, "Bichos de Pelúcia");
         this.categoryRepository.saveAll(Arrays.asList(category1, category2, category3, category4, category5));
 
-        UserModel user1 = new UserModel("João Silva", "joao.silva@example.com", "senha123");
-        UserModel user2 = new UserModel("Maria Oliveira", "maria.oliveira@example.com", "senha456");
-        UserModel user3 = new UserModel("Carlos Souza", "carlos.souza@example.com", "senha789");
-        UserModel user4 = new UserModel("Ana Costa", "ana.costa@example.com", "senha101");
-        UserModel user5 = new UserModel("Pedro Rocha", "pedro.rocha@example.com", "senha202");
+        UserModel user1 = new UserModel(null, "João Silva", "joao.silva@example.com", "senha123");
+        UserModel user2 = new UserModel(null, "Maria Oliveira", "maria.oliveira@example.com", "senha456");
+        UserModel user3 = new UserModel(null, "Carlos Souza", "carlos.souza@example.com", "senha789");
+        UserModel user4 = new UserModel(null, "Ana Costa", "ana.costa@example.com", "senha101");
+        UserModel user5 = new UserModel(null, "Pedro Rocha", "pedro.rocha@example.com", "senha202");
         this.userRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
 
+        /*
         ToysModel Carrinho = new ToysModel("Carro de Controle Remoto", "Carro vermelho com controle", 59.99);
         Carrinho.setCategory(category3);
         ToysModel Boneca = new ToysModel("Boneca Fashion", "Boneca com roupas estilosas", 29.99);
@@ -58,6 +59,6 @@ public class TestConfig implements CommandLineRunner {
         ToysModel Xadrez = new ToysModel("Tabuleiro de Xadrez", "Jogo de estrategia, muito RedTrad", 39.99);
         Xadrez.setCategory(category1);
         toysRepository.saveAll(Arrays.asList(Carrinho, Boneca, Tabuleiro, Xadrez));
-
+         */
     }
 }

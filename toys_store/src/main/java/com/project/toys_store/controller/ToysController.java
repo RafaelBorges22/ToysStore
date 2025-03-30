@@ -1,18 +1,18 @@
 package com.project.toys_store.controller;
 
+import com.project.toys_store.dto.Toys.InsertToysDto;
+import com.project.toys_store.dto.Toys.ToysDto;
 import com.project.toys_store.model.ToysModel;
 import com.project.toys_store.service.ToysService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
-
-// observação -> sempre utiliza esses vocabulários
-// findAll, findOne, create, deleteOne, deleteMany
-// eles representam boas práticas
 
 @RestController
 @RequestMapping("/toys")
@@ -21,22 +21,29 @@ public class ToysController {
     private ToysService toysService;
 
     @GetMapping
-    public ResponseEntity<Set<ToysModel>> findAll() {
-        Set<ToysModel> toysModelList = this.toysService.findAll();
+    public ResponseEntity<List<ToysModel>> findAll() {
+        List<ToysModel> toysModelList = this.toysService.findAll();
         return ResponseEntity.ok().body(toysModelList);
     }
 
     //Get por categoria
-    @GetMapping("/categories/{categoryId}")
-    public Set<ToysModel> getBrinquedosByCategoria(@PathVariable Long categoryId) {
-        return toysService.findByCategoryId(categoryId);
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ToysModel>> getBrinquedosByCategoria(@PathVariable Long categoryId) {
+        List<ToysModel> toysModelList = toysService.findByCategoryId(categoryId);
+        return ResponseEntity.ok().body(toysModelList);
     }
 
-    @PostMapping
-    public ResponseEntity<ToysModel> create(@RequestBody ToysModel createToy) {
-        createToy = this.toysService.create(createToy);
-        URI uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createToy.getId()).toUri();
-        return ResponseEntity.created(uriBuilder).body(createToy);
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<ToysDto> create(InsertToysDto createToy) {
+        ToysDto toy = this.toysService.create(createToy);
+        URI uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(toy.getId()).toUri();
+        return ResponseEntity.created(uriBuilder).body(toy);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ToysModel> findOne(@PathVariable Long id) {
+        ToysModel toysModel = this.toysService.findOne(id);
+        return ResponseEntity.ok().body(toysModel);
     }
 
     @PutMapping(value = "/{id}")

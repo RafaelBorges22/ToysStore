@@ -1,32 +1,66 @@
 package com.project.toys_store.service;
 
+import com.project.toys_store.dto.Toys.InsertToysDto;
+import com.project.toys_store.dto.Toys.ToysDto;
 import com.project.toys_store.exceptions.EntityNotFoundException;
+import com.project.toys_store.model.PhotosModel;
 import com.project.toys_store.model.ToysModel;
+import com.project.toys_store.repositories.PhotosRepository;
 import com.project.toys_store.repositories.ToysRepository;
+import io.github.cdimascio.dotenv.DotEnvException;
+import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.transaction.Transactional;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.Optional;
-import java.util.HashSet;
+import java.util.*;
 
 @Service
 public class ToysService {
     @Autowired
     private ToysRepository toysRepository;
 
-    public HashSet findAll() {
-        return new HashSet<>((Collection) this.toysRepository.findAll());
+    @Autowired
+    private FileUploadService fileUploadService;
+
+    @Autowired
+    private PhotosRepository photosRepository;
+
+    public List<ToysModel> findAll() {
+        return this.toysRepository.findAllToys();
     }
 
-    public Set<ToysModel> findByCategoryId(Long categoryId) {
-        return new HashSet<>(toysRepository.findByCategoryId(categoryId));
+    public List<ToysModel> findByCategoryId(Long categoryId) {
+        return this.toysRepository.findByCategoryId(categoryId);
     }
 
-    public ToysModel create(ToysModel createToy) {
-        return this.toysRepository.save(createToy);
+    public ToysDto create(InsertToysDto createToy) {
+        ToysModel toysModel = new ToysModel();
+        this.dtoToEntity(createToy, toysModel);
+
+        toysModel = this.toysRepository.save(toysModel);
+
+        for (MultipartFile m : createToy.getFiles()) {
+            String filePath = this.fileUploadService.uploadFile(m);
+            PhotosModel photos = new PhotosModel(null, filePath, toysModel); // Associe o toysModel
+            this.photosRepository.save(photos);
+        }
+
+        ToysDto toysDto = new ToysDto();
+        toysDto.setId(toysModel.getId());
+        toysDto.setName(toysModel.getName());
+        toysDto.setDescription(toysModel.getDescription());
+        toysDto.setPrice(toysModel.getPrice());
+
+        for (PhotosModel photo : toysModel.getPhotos()) {
+            toysDto.getFilesPath().add(photo.getPath());
+        }
+
+        return toysDto;
     }
+
 
     public ToysModel findOne(Long id) {
         Optional<ToysModel> toysModel = this.toysRepository.findById(id);
@@ -64,5 +98,13 @@ public class ToysService {
         toysEntity.setName(toysModel.getName());
         toysEntity.setDescription(toysModel.getDescription());
         toysEntity.setPrice(toysModel.getPrice());
+    }
+
+    public void dtoToEntity(InsertToysDto toysDto, ToysModel toysModel) {
+        // transformar um dto em uma entity
+        toysModel.setName(toysDto.getName());
+        toysModel.setDescription(toysDto.getDescription());
+        toysModel.setPrice(toysDto.getPrice());
+
     }
 }

@@ -1,6 +1,8 @@
 package com.project.toys_store.model;
+
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.io.Serializable;
 
 @Getter
@@ -9,11 +11,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_categories")
-public class CategoryModel implements Serializable {
+@Table(name = "tb_photos")
+public class PhotosModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String path;
+
+    @ManyToOne
+    @JoinColumn(name = "toy_id", nullable = false)
+    private ToysModel toysModel;
 }

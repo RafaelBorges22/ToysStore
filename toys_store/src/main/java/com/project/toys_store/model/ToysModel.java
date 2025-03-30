@@ -1,15 +1,16 @@
 package com.project.toys_store.model;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tb_toys")
 public class ToysModel implements Serializable {
@@ -21,30 +22,7 @@ public class ToysModel implements Serializable {
     private String description;
     private Double price;
 
-    public ToysModel() {
-    }
-
-    public ToysModel(String name, String description, Double price) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
-    private CategoryModel category;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        ToysModel toysModel = (ToysModel) o;
-        return Objects.equals(id, toysModel.id);
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "toysModel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PhotosModel> photos = new HashSet<>();
 }
