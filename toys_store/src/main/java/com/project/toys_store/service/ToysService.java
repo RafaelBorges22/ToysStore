@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ToysService {
@@ -28,8 +29,21 @@ public class ToysService {
     @Autowired
     private PhotosRepository photosRepository;
 
-    public List<ToysModel> findAll() {
-        return this.toysRepository.findAllToys();
+    public List<ToysDto> findAll() {
+        List<ToysModel> toysModelList = this.toysRepository.findAllToys();
+        return toysModelList.stream().map(item -> {
+            ToysDto toysDto = new ToysDto();
+            toysDto.setId(item.getId());
+            toysDto.setName(item.getName());
+            toysDto.setDescription(item.getDescription());
+            toysDto.setPrice(item.getPrice());
+
+           for(PhotosModel i : item.getPhotos()){
+               toysDto.getFilesPath().add(i.getPath());
+           }
+
+            return toysDto;
+        }).collect(Collectors.toList());
     }
 
     public List<ToysModel> findByCategoryId(Long categoryId) {
@@ -46,6 +60,7 @@ public class ToysService {
             String filePath = this.fileUploadService.uploadFile(m);
             PhotosModel photos = new PhotosModel(null, filePath, toysModel); // Associe o toysModel
             this.photosRepository.save(photos);
+            toysModel.getPhotos().add(photos);
         }
 
         ToysDto toysDto = new ToysDto();

@@ -21,8 +21,8 @@ public class ToysController {
     private ToysService toysService;
 
     @GetMapping
-    public ResponseEntity<List<ToysModel>> findAll() {
-        List<ToysModel> toysModelList = this.toysService.findAll();
+    public ResponseEntity<List<ToysDto>> findAll() {
+        List<ToysDto> toysModelList = this.toysService.findAll();
         return ResponseEntity.ok().body(toysModelList);
     }
 

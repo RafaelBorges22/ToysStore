@@ -1,8 +1,10 @@
 package com.project.toys_store.service;
 
+import com.project.toys_store.dto.User.InsertUserDTo;
 import com.project.toys_store.exceptions.EntityNotFoundException;
 import com.project.toys_store.model.UserModel;
 import com.project.toys_store.repositories.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,19 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FileUploadService fileUploadService;
+
     public List<UserModel> findAll() {
         return this.userRepository.findAll();
     }
 
-    public UserModel create(UserModel createUser) {
-        return this.userRepository.save(createUser);
+    public UserModel create(InsertUserDTo createUser) {
+        UserModel userModel = new UserModel();
+        this.dtoToEntity(userModel, createUser);
+        String file = this.fileUploadService.uploadFile(createUser.getPhoto());
+        userModel.setFilePath(file);
+        return this.userRepository.save(userModel);
     }
 
     public UserModel findOne(Long id) {
@@ -57,5 +66,10 @@ public class UserService {
         userEntity.setName(userModel.getName());
         userEntity.setEmail(userModel.getEmail());
         userEntity.setPassword(userModel.getPassword());
+    }
+    public void dtoToEntity(UserModel userModel, InsertUserDTo insertUserDTo){
+        userModel.setName(insertUserDTo.getName());
+        userModel.setEmail(insertUserDTo.getEmail());
+        userModel.setPassword(insertUserDTo.getPassword());
     }
 }

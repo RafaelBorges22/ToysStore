@@ -1,5 +1,6 @@
 package com.project.toys_store.controller;
 
+import com.project.toys_store.dto.User.InsertUserDTo;
 import com.project.toys_store.model.UserModel;
 import com.project.toys_store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ public class UserController {
         return ResponseEntity.ok().body(userModelList);
     }
 
-    @PostMapping
-    public ResponseEntity<UserModel> create(@RequestBody UserModel createUser) { // Corrigido: nome da variável
-        createUser = this.userService.create(createUser);
-        URI uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createUser.getId()).toUri();
-        return ResponseEntity.created(uriBuilder).body(createUser);
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<UserModel> create(InsertUserDTo createUser) {
+        UserModel create = this.userService.create(createUser);
+        URI uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(create.getId()).toUri();
+        return ResponseEntity.created(uriBuilder).body(create);
     }
 
     @PutMapping(value = "/{id}")

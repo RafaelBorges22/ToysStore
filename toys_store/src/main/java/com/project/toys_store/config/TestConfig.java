@@ -31,10 +31,6 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        toysRepository.deleteAll();
-
-        Set<ToysModel> toysSet = new HashSet<>();
-
         CategoryModel category1 = new CategoryModel(null, "Educativos");
         CategoryModel category2 = new CategoryModel(null, "Bonecas e Acessórios");
         CategoryModel category3 = new CategoryModel(null, "Carrinhos e Veículos");
@@ -42,11 +38,11 @@ public class TestConfig implements CommandLineRunner {
         CategoryModel category5 = new CategoryModel(null, "Bichos de Pelúcia");
         this.categoryRepository.saveAll(Arrays.asList(category1, category2, category3, category4, category5));
 
-        UserModel user1 = new UserModel(null, "João Silva", "joao.silva@example.com", "senha123");
-        UserModel user2 = new UserModel(null, "Maria Oliveira", "maria.oliveira@example.com", "senha456");
-        UserModel user3 = new UserModel(null, "Carlos Souza", "carlos.souza@example.com", "senha789");
-        UserModel user4 = new UserModel(null, "Ana Costa", "ana.costa@example.com", "senha101");
-        UserModel user5 = new UserModel(null, "Pedro Rocha", "pedro.rocha@example.com", "senha202");
+        UserModel user1 = new UserModel(null, "João Silva", "joao.silva@example.com", "senha123", null);
+        UserModel user2 = new UserModel(null, "Maria Oliveira", "maria.oliveira@example.com", "senha456", null);
+        UserModel user3 = new UserModel(null, "Carlos Souza", "carlos.souza@example.com", "senha789", null);
+        UserModel user4 = new UserModel(null, "Ana Costa", "ana.costa@example.com", "senha101", null);
+        UserModel user5 = new UserModel(null, "Pedro Rocha", "pedro.rocha@example.com", "senha202", null);
         this.userRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
 
         /*

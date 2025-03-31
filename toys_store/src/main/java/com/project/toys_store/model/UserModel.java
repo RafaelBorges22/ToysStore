@@ -19,5 +19,6 @@ public class UserModel implements Serializable {
     private String name;
     private String email;
     private String password;
+    private String filePath;
 }
 
