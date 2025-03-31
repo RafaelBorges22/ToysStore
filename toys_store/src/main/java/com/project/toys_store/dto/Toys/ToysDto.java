@@ -1,6 +1,9 @@
 package com.project.toys_store.dto.Toys;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -14,5 +17,5 @@ public class ToysDto {
     private Double price;
 
     @Getter
-    private Set<String> filesPath = new HashSet<>();
+    private List<String> filesPath = new ArrayList<>();
 }

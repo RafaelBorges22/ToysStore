@@ -10,6 +10,7 @@ import com.project.toys_store.repositories.ToysRepository;
 import io.github.cdimascio.dotenv.DotEnvException;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ToysService {
-    @Autowired
-    private ToysRepository toysRepository;
-
-    @Autowired
-    private FileUploadService fileUploadService;
-
-    @Autowired
-    private PhotosRepository photosRepository;
+    private final ToysRepository toysRepository;
+    private final FileUploadService fileUploadService;
+    private final PhotosRepository photosRepository;
+    private final CategoryService categoryService;
 
     public List<ToysDto> findAll() {
-        List<ToysModel> toysModelList = this.toysRepository.findAllToys();
+        List<ToysModel> toysModelList = this.toysRepository.findAll();
         return toysModelList.stream().map(item -> {
             ToysDto toysDto = new ToysDto();
             toysDto.setId(item.getId());
@@ -38,16 +36,16 @@ public class ToysService {
             toysDto.setDescription(item.getDescription());
             toysDto.setPrice(item.getPrice());
 
-           for(PhotosModel i : item.getPhotos()){
-               toysDto.getFilesPath().add(i.getPath());
-           }
+            for (PhotosModel i : item.getPhotos()) {
+                toysDto.getFilesPath().add(i.getPath());
+            }
 
             return toysDto;
         }).collect(Collectors.toList());
     }
 
     public List<ToysModel> findByCategoryId(Long categoryId) {
-        return this.toysRepository.findByCategoryId(categoryId);
+        return this.toysRepository.findAllByCategoryId(categoryId);
     }
 
     public ToysDto create(InsertToysDto createToy) {
@@ -58,7 +56,7 @@ public class ToysService {
 
         for (MultipartFile m : createToy.getFiles()) {
             String filePath = this.fileUploadService.uploadFile(m);
-            PhotosModel photos = new PhotosModel(null, filePath, toysModel); // Associe o toysModel
+            PhotosModel photos = new PhotosModel(null, filePath, toysModel);
             this.photosRepository.save(photos);
             toysModel.getPhotos().add(photos);
         }

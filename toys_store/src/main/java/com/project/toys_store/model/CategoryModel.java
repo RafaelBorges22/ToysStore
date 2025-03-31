@@ -2,6 +2,8 @@ package com.project.toys_store.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,4 +18,8 @@ public class CategoryModel implements Serializable {
     private Long id;
 
     private String name;
+
+    @Getter
+    @OneToMany(mappedBy = "toysModel")
+    private List<ToysModel> toysModel = new ArrayList<>();
 }

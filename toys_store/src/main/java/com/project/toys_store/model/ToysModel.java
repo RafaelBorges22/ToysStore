@@ -3,8 +3,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +23,11 @@ public class ToysModel implements Serializable {
     private Double price;
 
     @JsonIgnore
+    @JoinColumn(name = "category_id")
+    @ManyToOne
+    private CategoryModel categoryId;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "toysModel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PhotosModel> photos = new HashSet<>();
+    private List<PhotosModel> photos = new ArrayList<>();
 }
