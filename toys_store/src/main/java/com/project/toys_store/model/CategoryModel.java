@@ -20,6 +20,6 @@ public class CategoryModel implements Serializable {
     private String name;
 
     @Getter
-    @OneToMany(mappedBy = "toysModel")
+    @OneToMany(mappedBy = "categoryId")
     private List<ToysModel> toysModel = new ArrayList<>();
 }

@@ -21,5 +21,5 @@ public class PhotosModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "toy_id", nullable = false)
-    private ToysModel toysModel;
+    private ToysModel toysmodel;
 }

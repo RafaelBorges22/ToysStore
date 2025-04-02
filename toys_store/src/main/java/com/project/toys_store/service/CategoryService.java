@@ -1,5 +1,6 @@
 package com.project.toys_store.service;
 
+import com.project.toys_store.exceptions.AlreadyExistsException;
 import com.project.toys_store.exceptions.EntityNotFoundException;
 import com.project.toys_store.model.CategoryModel;
 import com.project.toys_store.repositories.CategoryRepository;
@@ -21,8 +22,8 @@ public class CategoryService {
 
     public CategoryModel create(CategoryModel createCategory) {
         // Verifica se já existe uma categoria com o mesmo nome
-        if (categoryRepository.existsByName(createCategory.getName())) {
-            throw new IllegalArgumentException("Já existe uma categoria com este nome");
+        if (this.categoryRepository.existsByName(createCategory.getName())) {
+            throw new AlreadyExistsException("This category already exists");
         }
         return this.categoryRepository.save(createCategory);
     }
@@ -39,7 +40,7 @@ public class CategoryService {
             // Verifica se o novo nome já existe (e não é o mesmo da entidade atual)
             if (!categoryEntity.getName().equals(categoryModel.getName()) &&
                     categoryRepository.existsByName(categoryModel.getName())) {
-                throw new IllegalArgumentException("Já existe uma categoria com este nome");
+                throw new AlreadyExistsException("Já existe uma categoria com este nome");
             }
 
             this.updateData(categoryEntity, categoryModel);

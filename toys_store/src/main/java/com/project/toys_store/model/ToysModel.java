@@ -23,11 +23,11 @@ public class ToysModel implements Serializable {
     private Double price;
 
     @JsonIgnore
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     @ManyToOne
     private CategoryModel categoryId;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "toysModel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "toysmodel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhotosModel> photos = new ArrayList<>();
 }

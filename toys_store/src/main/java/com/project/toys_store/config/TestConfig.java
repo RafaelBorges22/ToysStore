@@ -12,9 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 // classe para fazer seed no banco de dados -> iniciar o banco de dados com alguns registros
 @Configuration
@@ -31,11 +29,13 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        CategoryModel category1 = new CategoryModel(null, "Educativos");
-        CategoryModel category2 = new CategoryModel(null, "Bonecas e Acessórios");
-        CategoryModel category3 = new CategoryModel(null, "Carrinhos e Veículos");
-        CategoryModel category4 = new CategoryModel(null, "Jogos e Quebra-Cabeças");
-        CategoryModel category5 = new CategoryModel(null, "Bichos de Pelúcia");
+        List<ToysModel> toysModelList = new ArrayList<>();
+
+        CategoryModel category1 = new CategoryModel(null, "Educativos", toysModelList);
+        CategoryModel category2 = new CategoryModel(null, "Bonecas e Acessórios", toysModelList);
+        CategoryModel category3 = new CategoryModel(null, "Carrinhos e Veículos", toysModelList);
+        CategoryModel category4 = new CategoryModel(null, "Jogos e Quebra-Cabeças", toysModelList);
+        CategoryModel category5 = new CategoryModel(null, "Bichos de Pelúcia", toysModelList);
         this.categoryRepository.saveAll(Arrays.asList(category1, category2, category3, category4, category5));
 
         UserModel user1 = new UserModel(null, "João Silva", "joao.silva@example.com", "senha123", null);
