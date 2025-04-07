@@ -4,6 +4,7 @@ import com.project.toys_store.exceptions.AlreadyExistsException;
 import com.project.toys_store.exceptions.EntityNotFoundException;
 import com.project.toys_store.model.CategoryModel;
 import com.project.toys_store.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,9 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public Set<CategoryModel> findAll() {
         return new HashSet<>(this.categoryRepository.findAll());
@@ -36,19 +37,17 @@ public class CategoryService {
     public CategoryModel updateCategory(Long id, CategoryModel categoryModel) {
         try {
             CategoryModel categoryEntity = this.categoryRepository.getReferenceById(id);
-
-            // Verifica se o novo nome já existe (e não é o mesmo da entidade atual)
             if (!categoryEntity.getName().equals(categoryModel.getName()) &&
                     categoryRepository.existsByName(categoryModel.getName())) {
                 throw new AlreadyExistsException("Já existe uma categoria com este nome");
             }
-
             this.updateData(categoryEntity, categoryModel);
             return this.categoryRepository.save(categoryEntity);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("not found");
         }
     }
+
 
     public void deleteOne(Long id) {
         try {
@@ -68,5 +67,6 @@ public class CategoryService {
 
     private void updateData(CategoryModel categoryEntity, CategoryModel categoryModel) {
         categoryEntity.setName(categoryModel.getName());
+        categoryEntity.setShortDescription(categoryModel.getShortDescription());
     }
 }

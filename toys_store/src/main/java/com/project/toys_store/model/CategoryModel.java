@@ -18,6 +18,7 @@ public class CategoryModel implements Serializable {
     private Long id;
 
     private String name;
+    private String shortDescription;
 
     @Getter
     @OneToMany(mappedBy = "categoryId")

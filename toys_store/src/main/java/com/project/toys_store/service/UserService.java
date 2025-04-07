@@ -1,6 +1,7 @@
 package com.project.toys_store.service;
 
 import com.project.toys_store.dto.User.InsertUserDTo;
+import com.project.toys_store.enums.UserRole;
 import com.project.toys_store.exceptions.EntityNotFoundException;
 import com.project.toys_store.model.UserModel;
 import com.project.toys_store.repositories.UserRepository;
@@ -63,13 +64,17 @@ public class UserService {
     }
 
     public void updateData(UserModel userEntity, UserModel userModel) {
+        userEntity.setId(userModel.getId());
         userEntity.setName(userModel.getName());
         userEntity.setEmail(userModel.getEmail());
         userEntity.setPassword(userModel.getPassword());
     }
-    public void dtoToEntity(UserModel userModel, InsertUserDTo insertUserDTo){
+
+    public void dtoToEntity(UserModel userModel, InsertUserDTo insertUserDTo) {
+        UserRole userRole = UserRole.fromValue(insertUserDTo.getUserRole().getValue());
         userModel.setName(insertUserDTo.getName());
         userModel.setEmail(insertUserDTo.getEmail());
         userModel.setPassword(insertUserDTo.getPassword());
+        userModel.setUserRole(userRole);
     }
 }

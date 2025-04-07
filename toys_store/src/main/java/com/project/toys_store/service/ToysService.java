@@ -3,6 +3,7 @@ package com.project.toys_store.service;
 import com.project.toys_store.dto.Toys.InsertToysDto;
 import com.project.toys_store.dto.Toys.ToysDto;
 import com.project.toys_store.exceptions.EntityNotFoundException;
+import com.project.toys_store.model.CategoryModel;
 import com.project.toys_store.model.PhotosModel;
 import com.project.toys_store.model.ToysModel;
 import com.project.toys_store.repositories.PhotosRepository;
@@ -49,8 +50,13 @@ public class ToysService {
     }
 
     public ToysDto create(InsertToysDto createToy) {
+        CategoryModel categoryExists = this.categoryService.findOne(createToy.getCategoryId());
+        if (categoryExists == null){
+            throw new EntityNotFoundException("Category not exists");
+        }
         ToysModel toysModel = new ToysModel();
         this.dtoToEntity(createToy, toysModel);
+        toysModel.setCategoryId(categoryExists);
 
         toysModel = this.toysRepository.save(toysModel);
 
@@ -118,6 +124,5 @@ public class ToysService {
         toysModel.setName(toysDto.getName());
         toysModel.setDescription(toysDto.getDescription());
         toysModel.setPrice(toysDto.getPrice());
-
     }
 }

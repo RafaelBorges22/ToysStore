@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/toys")
 public class ToysController {
