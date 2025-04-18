@@ -2,6 +2,8 @@ services:
   app:
     container_name: toys-api
     build: .
+    volumes:
+      - .:/app
     ports:
       - "8081:8081"
     restart: always
@@ -19,7 +21,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_DB=toysdb
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=docker
 
 networks:
   toysnetwok:

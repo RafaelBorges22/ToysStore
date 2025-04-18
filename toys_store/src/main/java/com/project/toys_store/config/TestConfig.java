@@ -15,13 +15,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.util.*;
-
+/*
 // classe para fazer seed no banco de dados -> iniciar o banco de dados com alguns registros
 @Configuration
 @Profile("test") // -> prefil também definido no applicatio.properties
 @RequiredArgsConstructor
 public class TestConfig implements CommandLineRunner {
-
     private final ToysRepository toysRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -53,3 +52,4 @@ public class TestConfig implements CommandLineRunner {
         toysRepository.saveAll(Arrays.asList(Carrinho, Boneca, Tabuleiro, Xadrez));
     }
 }
+*/

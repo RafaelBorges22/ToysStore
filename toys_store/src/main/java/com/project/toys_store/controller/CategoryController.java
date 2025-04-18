@@ -2,6 +2,7 @@ package com.project.toys_store.controller;
 
 import com.project.toys_store.model.CategoryModel;
 import com.project.toys_store.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,10 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/categories")
 public class CategoryController {
-
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<Set<CategoryModel>> findAll() {
