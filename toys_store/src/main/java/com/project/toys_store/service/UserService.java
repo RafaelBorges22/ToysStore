@@ -1,10 +1,12 @@
 package com.project.toys_store.service;
 
 import com.project.toys_store.dto.User.InsertUserDTo;
+import com.project.toys_store.dto.User.UserDTo;
 import com.project.toys_store.enums.UserRole;
 import com.project.toys_store.exceptions.EntityNotFoundException;
 import com.project.toys_store.model.UserModel;
 import com.project.toys_store.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private FileUploadService fileUploadService;
+    private final UserRepository userRepository;
+    private final FileUploadService fileUploadService;
 
     public List<UserModel> findAll() {
         return this.userRepository.findAll();
@@ -37,11 +37,20 @@ public class UserService {
         return userModel.orElseThrow(() -> new EntityNotFoundException("Entidade não encontrada"));
     }
 
-    public UserModel updateUser(Long id, UserModel userModel) {
+    public UserDTo updateUser(Long id, InsertUserDTo insertUserDTo) {
+        UserModel userModel = new UserModel();
+        // fazer o upload da nova imagem(se ela existir)
+        if(!insertUserDTo.getPhoto().isEmpty()){
+            String path = this.fileUploadService.uploadFile(insertUserDTo.getPhoto());
+            userModel.setFilePath(path);
+        }
+        this.dtoToEntity(userModel, insertUserDTo);
         try {
             UserModel userEntity = this.userRepository.getReferenceById(id);
             this.updateData(userEntity, userModel);
-            return this.userRepository.save(userEntity);
+            this.userRepository.save(userModel);
+
+            return new UserDTo(userModel);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Não encontrado");
         }
@@ -64,7 +73,6 @@ public class UserService {
     }
 
     public void updateData(UserModel userEntity, UserModel userModel) {
-        userEntity.setId(userModel.getId());
         userEntity.setName(userModel.getName());
         userEntity.setEmail(userModel.getEmail());
         userEntity.setPassword(userModel.getPassword());

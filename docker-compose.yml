@@ -1,0 +1,25 @@
+services:
+  app:
+    container_name: toys-api
+    build: .
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    container_name: toys-database
+    image: postgres:latest
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    restart: always
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=toysdb
+      - POSTGRES_PASSWORD=
+
+networks:
+  toysnetwok:

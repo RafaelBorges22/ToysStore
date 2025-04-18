@@ -4,6 +4,7 @@ import com.project.toys_store.dto.Toys.InsertToysDto;
 import com.project.toys_store.dto.Toys.ToysDto;
 import com.project.toys_store.model.ToysModel;
 import com.project.toys_store.service.ToysService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,12 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/toys")
 public class ToysController {
-    @Autowired
-    private ToysService toysService;
+    private final ToysService toysService;
 
     @GetMapping
     public ResponseEntity<List<ToysDto>> findAll() {
