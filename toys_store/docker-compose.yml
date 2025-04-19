@@ -9,10 +9,16 @@ services:
     restart: always
     depends_on:
       - db
+    networks:
+      - toys-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/toysdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: docker
 
   db:
-    container_name: toys-database
-    image: postgres:latest
+    container_name: db
+    image: postgres:17
     volumes:
       - .docker/dbdata:/var/lib/postgresql/data
     restart: always
@@ -22,6 +28,9 @@ services:
     environment:
       - POSTGRES_DB=toysdb
       - POSTGRES_PASSWORD=docker
+    networks:
+      - toys-network
 
 networks:
-  toysnetwok:
+  toys-network:
+    driver: bridge
