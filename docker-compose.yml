@@ -8,13 +8,15 @@ services:
       - "8081:8081"
     restart: always
     depends_on:
-      - db
-    networks:
-      - toys-network
+      db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/toysdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: docker
+    networks:
+      - toys-network
+
 
   db:
     container_name: db
@@ -28,6 +30,11 @@ services:
     environment:
       - POSTGRES_DB=toysdb
       - POSTGRES_PASSWORD=docker
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - toys-network
 

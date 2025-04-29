@@ -1,11 +1,7 @@
 package com.project.toys_store.repositories;
-
-
-import com.project.toys_store.dto.Toys.ToysDto;
 import com.project.toys_store.model.ToysModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
